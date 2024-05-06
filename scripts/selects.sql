@@ -2,6 +2,22 @@
 
 SELECT * FROM pessoas;
 
+	--> ALUNO, FUNCIONÁRIO OU PROFESSOR
+
+	SELECT
+	    p.matricula,
+	    p.nome,
+	    p.email,
+	    p.cpf,
+	    CASE
+	        WHEN EXISTS (SELECT 1 FROM alunos a WHERE a.matricula = p.matricula) THEN 'Aluno'
+	        WHEN EXISTS (SELECT 1 FROM professores pr WHERE pr.matricula = p.matricula) THEN 'Professor'
+	        WHEN EXISTS (SELECT 1 FROM funcionarios f WHERE f.matricula = p.matricula) THEN 'Funcionário'
+	        ELSE 'Indefinido'
+	    END AS tipo_pessoa
+	FROM
+	    pessoas p;
+
  	--> CONTATOS
  	
 	SELECT p.nome "nome_pessoa",c.telefone
@@ -77,8 +93,6 @@ FROM alunos a
 		ON a.matricula = p.matricula;
 	
 	--> ALUNOS E TURMAS
-	
-	SELECT * FROM alunos_turmas at2 ;
 	
 	SELECT a.matricula, p.nome "nome_aluno", t.nome "nome_turma", at2.semestre
 	FROM alunos a 
